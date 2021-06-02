@@ -19,7 +19,9 @@
 			"meeting": "true",
 			"meetingURL": "https://google.com",
 			"meetingURLDesc": "Join this!",
-			"userIds": ["priya"]
+			"userIds": ["MultiDevice3", "MultiDevice4", "MultiDevice5", "MultiDevice6",
+				"MultiDevice1@exlibrisgroup.com", "MultiDevice2@exlibrisgroup.com", "MultiDevice3@exlibrisgroup.com",
+				"MultiDevice4@exlibrisgroup.com", "MultiDevice5@exlibrisgroup.com", "MultiDevice6@exlibrisgroup.com"]
 
 		},
 		{

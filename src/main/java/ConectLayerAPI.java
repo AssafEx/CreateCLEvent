@@ -40,12 +40,12 @@ public class ConectLayerAPI {
     private static DateTimeFormatter formatterDay = DateTimeFormatter.ofPattern("e");
 
     public static void main(String[] args) {
-        createSimpleEvent("MultiDevice1");
+        createStudentEvent("MultiDevice1");
+        createStaffEvent(323);  //creating event for student hannan and teacher 323 - AKA MultiDevice1. password:campusm
+
     }
 
-
-
-    private static void createSimpleEvent(String userName) {
+    private static void createEvent(String userName, int teacherId) {
         LocalTime midnight = LocalTime.MIDNIGHT;
         LocalDate today = LocalDate.now(zoneIsr);
         JSONObject event = readFromJsonFileToObject("src/main/resources/eventsOverlapFull.json").getJSONArray("events").getJSONObject(0);
@@ -59,16 +59,23 @@ public class ConectLayerAPI {
             .stream()
             .map(entry -> "&" + entry.getKey() + "=" + entry.getValue())
             .collect(Collectors.joining());
-        String payload =  String.format("createTimetableEntry?username=%s&password=%s",
-            userName, PASSWORD);
+        String payload =  String.format("createTimetableEntry?username=%s&password=%s", userName, PASSWORD);
         String URL = CCL_HOST + CCL_ENDPOINT_WSDL + payload + parametersString;
+        URL += teacherId ==0? "": "&teacher_id=" + teacherId;
         HttpResponse<String> res = Unirest.get(URL)
             .basicAuth(CCL_BASIC_AUTH_USER, CCL_BASIC_AUTH_PASS)
             .asString();
         Document doc = Jsoup.parse(res.getBody(), "", Parser.xmlParser());
         System.out.println("creating event for :" + userName + ": " + res.getStatus() + " " + doc.select("ns1|desc").text());
     }
+    private static void createStudentEvent(String userName) {
+        createEvent(userName,0);
+    }
 
+
+    private static void createStaffEvent(int teacherId) {
+        createEvent("hannan",teacherId);
+    }
     public static JSONObject readFromJsonFileToObject(String path) {
         try {
             if (!(new File(path)).exists()) {
